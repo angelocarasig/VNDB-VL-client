@@ -34,7 +34,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://vndb-vl-server.herokuapp.com",
   "browserslist": {
     "production": [
       ">0.2%",
