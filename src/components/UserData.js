@@ -16,7 +16,8 @@ const UserData = () => {
       method: "post",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify(location.state),
     })
