@@ -34,7 +34,7 @@ const HeroSection = () => {
 
         <Container className="HeroSectionContent" style={ContainerStyles}>
             <Center>
-              <Text sx={{ color: "white", fontSize: "100px" }}>
+              <Text sx={{ color: "white", fontSize: "80px" }}>
                 {" "}
                 VNDB-Visualizer{" "}
               </Text>
@@ -43,7 +43,7 @@ const HeroSection = () => {
             <Divider color="rgba(255,255,255,0.2)" />
 
             <Center>
-              <Text sx={{ color: "white", fontSize: "50px" }}>
+              <Text sx={{ color: "white", fontSize: "45px" }}>
                 Enter your ID to get started!{" "}
               </Text>
             </Center>
