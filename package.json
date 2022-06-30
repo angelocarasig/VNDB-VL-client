@@ -34,7 +34,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://vndb-vl-server.herokuapp.com",
   "browserslist": {
     "production": [
       ">0.2%",
