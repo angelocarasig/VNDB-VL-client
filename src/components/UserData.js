@@ -12,7 +12,7 @@ const UserData = () => {
   const [userList, setUserList] = useState([]);
   
   const loadUserData = async () => {
-    fetch("https://vndb-vl-server.herokuapp.com/get_user_data", {
+    fetch("/get_user_data", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

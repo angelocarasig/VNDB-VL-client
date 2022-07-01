@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Grid } from "@mui/material";
 import {
@@ -35,7 +35,13 @@ const gridItemHover = {
   },
 };
 
-const VNCards = (userNovels, color) => {
+const blurComponent = {
+  filter: "blur(15px)",
+}
+
+const VNCards = (userNovels, color, explicitContent) => {
+  console.log(explicitContent);
+
   const vndata = userNovels.userNovels;
 
   const [modal, showModal] = useState(false);
@@ -43,15 +49,24 @@ const VNCards = (userNovels, color) => {
   const disableModal = () => showModal(false);
 
   const [loadingImage, setLoadingImage] = useState(true);
-  const removeSkeleton = () => {
-    setLoadingImage(false);
-  };
+  const removeSkeleton = () => setLoadingImage(false);
+
+
+  // useEffect(() => {
+  //   if (explicitMode) {
+  //     console.log("Enabling content for: " + vndata.title)
+  //   }
+  //   else {
+  //     console.log("Disabling content for: " + vndata.title)
+  //   }
+  // }, [])
 
   const slideImages = [];
 
   for (let i = 0; i < vndata.screens.length; i++) {
     let entry = {
-      url: vndata.screens[i],
+      url: vndata.screens[i]['image'],
+      flag: vndata.screens[i]['flag'],
     };
     slideImages.push(entry);
   }
@@ -88,14 +103,18 @@ const VNCards = (userNovels, color) => {
                     width: "80%",
                     marginLeft: "auto",
                     marginRight: "auto",
+                    overflow: "hidden",
                   }}
                 >
                   {loadingImage ? <Skeleton height="600px" /> : null}
                   
                   <Image
                     src={currentImage.url}
+                    alt="With default placeholder"
                     radius="lg"
-                    style={{ cursor: "pointer" }}
+                    withPlaceholder
+                    style={currentImage.flag > 1 && explicitContent ? blurComponent : { cursor: "pointer" }}
+                    placeholder={<Text align="center">R-18 Content - Enable R-18 mode to view images</Text>}
                     onLoad={removeSkeleton}
                   />
 
@@ -111,9 +130,9 @@ const VNCards = (userNovels, color) => {
         <Card {...cardStyle} onClick={enableModal}>
           <Card.Section>
             <Image
-              src={vndata.image_flag > 1 ? null : vndata.image}
+              src={vndata.image}
               height={400}
-              alt="With default placeholder"
+              style={vndata.image_flag > 1 && explicitContent ? blurComponent : { cursor: "pointer" }}
             />
           </Card.Section>
 

@@ -4,6 +4,7 @@ import { motion } from "framer-motion/dist/framer-motion";
 
 import {
   Select,
+  Switch,
   useMantineTheme,
   Space,
   ActionIcon,
@@ -31,6 +32,20 @@ const VNData = ({ UserData }) => {
   const [userNovels, setUserNovels] = useState([]);
   const [sortType, setSortType] = useState("");
   const [order, setOrder] = useState("ASC");
+
+  const [explicitImage, setExplicitImage] = useState(false);
+  console.log("Explicit Content? " + explicitImage)
+  
+  const handleExplicit = (event) => {
+    if (explicitImage === false) {
+      console.log("Enabling")
+      setExplicitImage(true)
+    }
+    else {
+      console.log("Disabling")
+      setExplicitImage(false)
+    }
+  }
 
   useEffect(() => {
     setUserNovels(UserData.UserData);
@@ -88,8 +103,7 @@ const VNData = ({ UserData }) => {
 
   const theme = useMantineTheme();
 
-  const secondaryColor =
-    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+  const secondaryColor = theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   // =========================================
   // THEMES
@@ -97,6 +111,25 @@ const VNData = ({ UserData }) => {
 
   return (
     <>
+      <div className="R18-Mode" 
+      style={{
+          width: "100%",
+          right: 0,
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+
+      <Switch
+      label="R-18 Mode"
+      size="md"
+      color="dark"
+      checked={explicitImage}
+      onChange={handleExplicit}
+      />
+
+      </div>
+      
       <div className="Sorting"
         style={{
           width: "100%",
@@ -145,10 +178,10 @@ const VNData = ({ UserData }) => {
         justifyContent="center"
       >
         
-        {userNovels.map((vn, pos) => {
+        {userNovels && userNovels.map((vn, pos) => {
           return (
             <Grid item key={pos} component={motion.div} {...gridItemHover} style={{cursor: "pointer"}}>
-              <VNCards userNovels={vn} color={secondaryColor} />
+              <VNCards userNovels={vn} color={secondaryColor} explicitContent={explicitImage}/>
             </Grid>
           );
         })}
