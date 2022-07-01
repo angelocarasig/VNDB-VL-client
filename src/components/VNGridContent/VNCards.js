@@ -39,10 +39,15 @@ const blurComponent = {
   filter: "blur(15px)",
 }
 
-const VNCards = (userNovels, color, explicitContent) => {
-  console.log(explicitContent);
+const VNCards = (props) => {
 
-  const vndata = userNovels.userNovels;
+  const userNovels = props.userNovels;
+  const color = props.color;
+  const explicitImage = props.explicitImage;
+  
+  console.log("Explicit Content: " + explicitImage);
+
+  const vndata = userNovels;
 
   const [modal, showModal] = useState(false);
   const enableModal = () => showModal(true);
@@ -77,7 +82,7 @@ const VNCards = (userNovels, color, explicitContent) => {
         opened={modal}
         onClose={disableModal}
         title={vndata.title}
-        size="calc(100vw - 40%)"
+        size="calc(100vw - 20%)"
       >
         <Swiper
           autoHeight={true}
@@ -113,7 +118,7 @@ const VNCards = (userNovels, color, explicitContent) => {
                     alt="With default placeholder"
                     radius="lg"
                     withPlaceholder
-                    style={currentImage.flag > 1 && explicitContent ? blurComponent : { cursor: "pointer" }}
+                    style={currentImage.flag > 1 && !explicitImage ? blurComponent : { cursor: "pointer" }}
                     placeholder={<Text align="center">R-18 Content - Enable R-18 mode to view images</Text>}
                     onLoad={removeSkeleton}
                   />
@@ -132,7 +137,7 @@ const VNCards = (userNovels, color, explicitContent) => {
             <Image
               src={vndata.image}
               height={400}
-              style={vndata.image_flag > 1 && explicitContent ? blurComponent : { cursor: "pointer" }}
+              style={vndata.image_flag > 1 && !explicitImage ? blurComponent : { cursor: "pointer" }}
             />
           </Card.Section>
 

@@ -26,7 +26,6 @@ const gridItemHover = {
 };
 
 const VNData = ({ UserData }) => {
-
   console.log(UserData.UserData);
 
   const [userNovels, setUserNovels] = useState([]);
@@ -34,18 +33,18 @@ const VNData = ({ UserData }) => {
   const [order, setOrder] = useState("ASC");
 
   const [explicitImage, setExplicitImage] = useState(false);
-  console.log("Explicit Content? " + explicitImage)
-  
+
+  console.log("Explicit Content? " + explicitImage);
+
   const handleExplicit = (event) => {
     if (explicitImage === false) {
-      console.log("Enabling")
-      setExplicitImage(true)
+      console.log("Enabling");
+      setExplicitImage(true);
+    } else {
+      console.log("Disabling");
+      setExplicitImage(false);
     }
-    else {
-      console.log("Disabling")
-      setExplicitImage(false)
-    }
-  }
+  };
 
   useEffect(() => {
     setUserNovels(UserData.UserData);
@@ -103,7 +102,8 @@ const VNData = ({ UserData }) => {
 
   const theme = useMantineTheme();
 
-  const secondaryColor = theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+  const secondaryColor =
+    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   // =========================================
   // THEMES
@@ -111,33 +111,27 @@ const VNData = ({ UserData }) => {
 
   return (
     <>
-      <div className="R18-Mode" 
-      style={{
-          width: "100%",
-          right: 0,
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-
-      <Switch
-      label="R-18 Mode"
-      size="md"
-      color="dark"
-      checked={explicitImage}
-      onChange={handleExplicit}
-      />
-
-      </div>
-      
-      <div className="Sorting"
+      <div
+        className="Sorting"
         style={{
           width: "100%",
           right: 0,
           display: "flex",
           justifyContent: "flex-end",
+          position: "relative"
         }}
       >
+        <div style={{ position: "absolute", left: "0", bottom: "0"}}>
+          <Switch
+            label="R-18 Mode"
+            size="md"
+            color="dark"
+            checked={explicitImage}
+            onChange={handleExplicit}
+          />
+        </div>
+
+        <Space w="md" />
 
         <Select
           label="Sort By"
@@ -153,7 +147,6 @@ const VNData = ({ UserData }) => {
         />
 
         <Center style={{ marginLeft: "5px" }}>
-
           <ActionIcon
             variant="outline"
             color="gray"
@@ -164,12 +157,11 @@ const VNData = ({ UserData }) => {
           >
             {buttonType()}
           </ActionIcon>
-
         </Center>
       </div>
 
       <Space h="md" />
-      
+
       <Grid
         container
         spacing={2}
@@ -177,17 +169,25 @@ const VNData = ({ UserData }) => {
         alignItems="center"
         justifyContent="center"
       >
-        
-        {userNovels && userNovels.map((vn, pos) => {
-          return (
-            <Grid item key={pos} component={motion.div} {...gridItemHover} style={{cursor: "pointer"}}>
-              <VNCards userNovels={vn} color={secondaryColor} explicitContent={explicitImage}/>
-            </Grid>
-          );
-        })}
-
+        {userNovels &&
+          userNovels.map((vn, pos) => {
+            return (
+              <Grid
+                item
+                key={pos}
+                component={motion.div}
+                {...gridItemHover}
+                style={{ cursor: "pointer" }}
+              >
+                <VNCards
+                  userNovels={vn}
+                  color={secondaryColor}
+                  explicitImage={explicitImage}
+                />
+              </Grid>
+            );
+          })}
       </Grid>
-
     </>
   );
 };
