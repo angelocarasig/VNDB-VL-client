@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { Grid } from "@mui/material";
-import {
-  Card,
-  Image,
-  Modal,
-  Skeleton,
-  Space,
-  Text,
-} from "@mantine/core";
+import { Fade, Grid, Modal, Backdrop } from "@mui/material";
+import { Card, Image, Paper, Box, Skeleton, Space, Text } from "@mantine/core";
 
 import { motion } from "framer-motion/dist/framer-motion";
 
@@ -37,15 +30,14 @@ const gridItemHover = {
 
 const blurComponent = {
   filter: "blur(15px)",
-}
+};
 
 const VNCards = (props) => {
-
   const userNovels = props.userNovels;
   const color = props.color;
   const explicitImage = props.explicitImage;
-  
-  console.log("Explicit Content: " + explicitImage);
+
+  // console.log("Explicit Content: " + explicitImage);
 
   const vndata = userNovels;
 
@@ -55,7 +47,6 @@ const VNCards = (props) => {
 
   const [loadingImage, setLoadingImage] = useState(true);
   const removeSkeleton = () => setLoadingImage(false);
-
 
   // useEffect(() => {
   //   if (explicitMode) {
@@ -70,8 +61,8 @@ const VNCards = (props) => {
 
   for (let i = 0; i < vndata.screens.length; i++) {
     let entry = {
-      url: vndata.screens[i]['image'],
-      flag: vndata.screens[i]['flag'],
+      url: vndata.screens[i]["image"],
+      flag: vndata.screens[i]["flag"],
     };
     slideImages.push(entry);
   }
@@ -79,57 +70,101 @@ const VNCards = (props) => {
   return (
     <>
       <Modal
-        opened={modal}
+        // opened={modal}
+        // onClose={disableModal}
+        // title={vndata.title}
+        // size="calc(100vw - 20%)"
+
+        open={modal}
         onClose={disableModal}
-        title={vndata.title}
-        size="calc(100vw - 20%)"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <Swiper
-          autoHeight={true}
-          navigation={true}
-          effect="fade"
-          loop={true}
-          modules={[Autoplay, Pagination, Navigation, EffectFade]}
-          pagination={{
-            dynamicBullets: true,
-          }}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: true,
-          }}
-          spaceBetween={0}
-          slidesPerView={1}
-        >
-          {slideImages.map((currentImage, pos) => {
-            return (
-              <SwiperSlide key={pos}>
-                <div
-                  style={{
-                    width: "80%",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    overflow: "hidden",
-                  }}
-                >
-                  {loadingImage ? <Skeleton height="600px" /> : null}
-                  
-                  <Image
-                    src={currentImage.url}
-                    alt="With default placeholder"
-                    radius="lg"
-                    withPlaceholder
-                    style={currentImage.flag > 1 && !explicitImage ? blurComponent : { cursor: "pointer" }}
-                    placeholder={<Text align="center">R-18 Content - Enable R-18 mode to view images</Text>}
-                    onLoad={removeSkeleton}
-                  />
+        <Fade in={modal}>
+          <Box
+          size="50%"
+            sx={(theme) => ({
+              display: "block",
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[6]
+                  : theme.colors.gray[0],
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.blue[4]
+                  : theme.colors.blue[7],
+              textAlign: "center",
+              padding: theme.spacing.xl,
+              borderRadius: theme.radius.md,
+              cursor: "pointer",
 
-                </div>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+              "&:hover": {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[5]
+                    : theme.colors.gray[1],
+              },
+            })}
+          >
+            <Paper>
+              <Swiper
+                autoHeight={true}
+                navigation={true}
+                effect="fade"
+                loop={true}
+                modules={[Autoplay, Pagination, Navigation, EffectFade]}
+                pagination={{
+                  dynamicBullets: true,
+                }}
+                autoplay={{
+                  delay: 4000,
+                  disableOnInteraction: true,
+                }}
+                spaceBetween={0}
+                slidesPerView={1}
+              >
+                {slideImages.map((currentImage, pos) => {
+                  return (
+                    <SwiperSlide key={pos}>
+                      <div
+                        style={{
+                          width: "80%",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {loadingImage ? <Skeleton height="600px" /> : null}
+
+                        <Image
+                          src={currentImage.url}
+                          alt="With default placeholder"
+                          radius="lg"
+                          withPlaceholder
+                          style={
+                            currentImage.flag > 1 && !explicitImage
+                              ? blurComponent
+                              : { cursor: "pointer" }
+                          }
+                          placeholder={
+                            <Text align="center">
+                              R-18 Content - Enable R-18 mode to view images
+                            </Text>
+                          }
+                          onLoad={removeSkeleton}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Paper>
+          </Box>
+        </Fade>
       </Modal>
-
 
       <Grid item component={motion.div} {...gridItemHover}>
         <Card {...cardStyle} onClick={enableModal}>
@@ -137,7 +172,11 @@ const VNCards = (props) => {
             <Image
               src={vndata.image}
               height={400}
-              style={vndata.image_flag > 1 && !explicitImage ? blurComponent : { cursor: "pointer" }}
+              style={
+                vndata.image_flag > 1 && !explicitImage
+                  ? blurComponent
+                  : { cursor: "pointer" }
+              }
             />
           </Card.Section>
 

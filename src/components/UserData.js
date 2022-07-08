@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingAnimation } from "./Routing/LoadingAnimation";
-import { LoadingOverlay, Paper } from "@mantine/core";
+import { LoadingOverlay, Paper, Button } from "@mantine/core";
 
 import UserDataShell from "./VNGridContent/UserDataShell";
 
@@ -11,6 +11,8 @@ const UserData = () => {
   const [apiLoad, setApiLoad] = useState(false);
   const [userList, setUserList] = useState([]);
   
+  const navigateTo = useNavigate();
+
   const loadUserData = async () => {
     fetch("/get_user_data", {
       method: "post",
@@ -37,7 +39,9 @@ const UserData = () => {
 
       //Otherwise, redirect to error page
       .catch((error) => {
-        console.log(error);
+        const errorException = error;
+        navigateTo("/ErrorPage", { state: { Error: errorException } });
+        
       });
   };
 
@@ -48,10 +52,10 @@ const UserData = () => {
   return (
     <>
       <LoadingAnimation />
-      <Paper >
-        <LoadingOverlay visible={!apiLoad} />
-        <UserDataShell UserData={userList} />
-      </Paper>
+        <Paper >
+          <LoadingOverlay visible={!apiLoad} />
+          <UserDataShell UserData={userList} />
+        </Paper>
     </>
   );
 };

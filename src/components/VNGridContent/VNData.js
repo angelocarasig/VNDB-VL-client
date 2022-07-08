@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion/dist/framer-motion";
 
 import {
@@ -33,8 +32,6 @@ const VNData = ({ UserData }) => {
   const [order, setOrder] = useState("ASC");
 
   const [explicitImage, setExplicitImage] = useState(false);
-
-  console.log("Explicit Content? " + explicitImage);
 
   const handleExplicit = (event) => {
     if (explicitImage === false) {
